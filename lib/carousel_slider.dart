@@ -77,13 +77,13 @@ class CarouselSlider extends StatefulWidget {
 
 class _CarouselSliderState extends State<CarouselSlider> with TickerProviderStateMixin {
   int currentPage;
-
+  Timer timer;
   @override
   void initState() {
     super.initState();
     currentPage = widget.initialPage;
     if (widget.autoPlay) {
-      new Timer.periodic(widget.interval, (_) {
+      timer = new Timer.periodic(widget.interval, (_) {
         widget.pageController.nextPage(
           duration: widget.autoPlayDuration,
           curve: widget.autoPlayCurve
@@ -92,6 +92,11 @@ class _CarouselSliderState extends State<CarouselSlider> with TickerProviderStat
     }
   }
 
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
   getWrapper(Widget child) {
     if (widget.height != null) {
       return new Container(
